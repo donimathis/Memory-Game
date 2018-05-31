@@ -4,9 +4,7 @@
  */
  // in order for the javascript and html to interact, you must use the dom
 // Create a list(array) that holds all of your cards
-let cardsArray = document.getElementsByClassName('card'); // getting the element
-let cards[...card] // adding all the arrays
-console.log('cards');
+
 /*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
@@ -28,9 +26,16 @@ function shuffle(array) {
     return array;
 }
 
-document.body.onload = startGame();
 
 
+var allCards = document.querySelectorAll('.card'); //grab the cards
+var numOpenCards = 0;
+
+allCards. forEach(function(card) {
+  card.eventListener('click', function(e) {
+    card.classList.add('open', 'show');
+  });
+});
 /*
  * set up the event listener for a card. If a card is clicked:
  *  - display the card's symbol (put this functionality in another function that you call from this one)
