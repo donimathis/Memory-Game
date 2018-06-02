@@ -1,4 +1,5 @@
 # Memory Game Project: 
+The project is apart of the Grow with Google Scholars Front- End Nanodegree with Udacity. 
 
 # Memory Game Challenge: 
 The purpose of this Memory Game is to test users memory
