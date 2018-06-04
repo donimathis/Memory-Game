@@ -2,7 +2,7 @@
  * Create a list that holds all of your cards
   array is a list
  */
- // in order for the javascript and html to interact, you must use the dom
+// in order for the javascript and html to interact, you must use the dom
 // Create a list(array) that holds all of your cards
 
 /*
@@ -14,28 +14,52 @@
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
-    while (currentIndex !== 0) {
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex -= 1;
-        temporaryValue = array[currentIndex];
-        array[currentIndex] = array[randomIndex];
-        array[randomIndex] = temporaryValue;
-    }
+  var currentIndex = array.length,
+    temporaryValue, randomIndex;
+  while (currentIndex !== 0) {
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
 
-    return array;
+  return array;
 }
 
-
-
+//cards flipping and closing
 var allCards = document.querySelectorAll('.card'); //grab the cards
-var numOpenCards = 0;
+var numOpenCards = [] //open card array
 
-allCards. forEach(function(card) {
-  card.eventListener('click', function(e) {
-    card.classList.add('open', 'show');
-  });
+allCards.forEach(function(card) {
+  card.addEventListener('click, function(e)') {
+    openCards.push(card); //
+    card.classList.add('open','show');
+    console.log('Open Cards:', openCards.length);
+
+if(openCards.legnth == 2) {
+  setTimeout(function() { /// we want you to runt his function.
+    openCards.forEach(function(card)){
+      card.classList.remove('open', 'show');
+    });
+
+    openCards = [];
+  }, 1000);
+
+
+}
 });
+});
+
+
+
+
+
+
+
+
+
+
 /*
  * set up the event listener for a card. If a card is clicked:
  *  - display the card's symbol (put this functionality in another function that you call from this one)
