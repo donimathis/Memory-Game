@@ -26,11 +26,23 @@ function shuffle(array) {
 
   return array;
 }
+//click the cards over
  var allCards = document.querySelectorAll('.card');
+ var openCards = []''
 
  allCards.forEach(function(card) {
-   card.addEventListener('click', function(e) {
+   card.addEventListener('click', function(e) { //addEventListener
+     openCards.push(card);
      card.classList.add('open', 'show');
+     console.log('Open Cards:', openCards.length);
+
+     if (openCards.length == 2) { // if two cards open
+       setTimeout(function() {   //so it will stop
+          openCards.forEach(function(card) {
+              card.classList.remove('open', 'show');
+          });
+       }, 1000);
+     }
    });
  });
 
