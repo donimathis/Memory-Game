@@ -26,32 +26,13 @@ function shuffle(array) {
 
   return array;
 }
+ var allCards = document.querySelectorAll('.card');
 
-//cards flipping and closing
-var allCards = document.querySelectorAll('.card'); //grab the cards
-var numOpenCards = [] //open card array
-
-allCards.forEach(function(card) {
-  card.addEventListener('click, function(e)') {
-    openCards.push(card); //
-    card.classList.add('open','show');
-    console.log('Open Cards:', openCards.length);
-
-if(openCards.legnth == 2) {
-  setTimeout(function() { /// we want you to runt his function.
-    openCards.forEach(function(card)){
-      card.classList.remove('open', 'show');
-    });
-
-    openCards = [];
-  }, 1000);
-
-
-}
-});
-});
-
-
+ allCards.forEach(function(card) {
+   card.addEventListener('click', function(e) {
+     card.classList.add('open', 'show');
+   });
+ });
 
 
 
