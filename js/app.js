@@ -26,35 +26,30 @@ function shuffle(array) {
 
   return array;
 }
-//click the cards over
- var allCards = document.querySelectorAll('.card');
- var openCards = []''
 
- allCards.forEach(function(card) {
-   card.addEventListener('click', function(e) { //addEventListener
-     openCards.push(card);
-     card.classList.add('open', 'show');
-     console.log('Open Cards:', openCards.length);
+//step 1. all the cards have a "card" class
+//step 2. use querySelector to store all valules in a variable
+//step 3. the variable is called "deck" to represent the deck of cards
+// what is a querySelectorAll?
 
-     if (openCards.length == 2) { // if two cards open
-       setTimeout(function() {   //so it will stop
-          openCards.forEach(function(card) {
-              card.classList.remove('open', 'show');
-          });
-       }, 1000);
-     }
-   });
- });
+const deck = document.querySelector('.deck');
+deck.addEventListener('click',event = > {
+  const clickTarget = event.target;
+  if (clickTarget.classList.contains('card')) {
+    clickTarget.classList.toggle('open');
+    clickTarget.classList.toggle('show');
+  }
+})
 
-
-
-
+// use a loop to attached an event listener to each card
+// it's easier to do that than individually
 
 
 
 
 /*
  * set up the event listener for a card. If a card is clicked:
+
  *  - display the card's symbol (put this functionality in another function that you call from this one)
  *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
  *  - if the list already has another card, check to see if the two cards match
