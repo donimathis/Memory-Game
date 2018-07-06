@@ -33,16 +33,37 @@ function shuffle(array) {
 // what is a querySelectorAll?
 
 const deck = document.querySelector('.deck');
-deck.addEventListener('click',event = > {
+
+deck.addEventListener('click',event => {
   const clickTarget = event.target;
-  if (clickTarget.classList.contains('card')) {
+  if (clickTarget.classList.contains('card') && toggledCards.length < 2) {
+    toggleCard(clickTarget);
+    addToggleCard(clickTarget);
+    if(toggledCards.length === 2) {
+  
+    }
+  }
+});
+
+function.toggleCard(clickTarget) {
     clickTarget.classList.toggle('open');
     clickTarget.classList.toggle('show');
   }
-})
+
+function addToggleCard(clickTarget {
+  toggleCards.push(clickTarget);
+  console.log(toggleCard)
+}
 
 // use a loop to attached an event listener to each card
 // it's easier to do that than individually
+
+
+//add the card to a list of open cards
+//step1: create a variable which holds and empty earry
+//step2: push click targets into it.
+
+let toggledCards = [];
 
 
 
