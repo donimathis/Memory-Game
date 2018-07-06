@@ -36,6 +36,7 @@ const deck = document.querySelector('.deck');
 
 deck.addEventListener('click',event => {
   const clickTarget = event.target;
+<<<<<<< HEAD
 
 
 
@@ -67,12 +68,27 @@ deck.addEventListener('click',event => {
 function.toggleCard(card) {
     card.classList.toggle('open');
     card.classList.toggle('show');
+=======
+  if (clickTarget.classList.contains('card') && toggledCards.length < 2) {
+    toggleCard(clickTarget);
+    addToggleCard(clickTarget);
+    if(toggledCards.length === 2) {
+  
+    }
+  }
+});
+
+function.toggleCard(clickTarget) {
+    clickTarget.classList.toggle('open');
+    clickTarget.classList.toggle('show');
+>>>>>>> 55e775b5412b1af770891c1f5423b7e3b1d1a7bf
   }
 
 function addToggleCard(clickTarget {
   toggleCards.push(clickTarget);
   console.log(toggleCard)
 }
+<<<<<<< HEAD
 
 
 function checkForMatch ()
@@ -98,6 +114,8 @@ if (
 
 
 
+=======
+>>>>>>> 55e775b5412b1af770891c1f5423b7e3b1d1a7bf
 
 // use a loop to attached an event listener to each card
 // it's easier to do that than individually
