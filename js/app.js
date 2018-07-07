@@ -1,9 +1,41 @@
-/*
- * Create a list that holds all of your cards
-  array is a list
- */
+const deck = document.querySelector('.deck');
+let moves = 0; //the moves counter
+
+
+
+// * Create a list that holds all of your cards
+//  array is a list
+ //*/
 // in order for the javascript and html to interact, you must use the dom
 // Create a list(array) that holds all of your cards
+
+//moves function
+function addMove() {
+  moves++
+  const movesText = document.querySelector('.moves');
+  movesText.innerHTML = moves;
+}
+
+//stars
+function checkScore() {
+  if(moves === 16 || moves === 24
+  ){ removeStar();
+
+  }
+}
+
+function hideStar() {
+  const starlist = document.querySelectorAll('.stars li');
+  for (star of starlist) {
+    if (star.style.display !== 'none') {
+        star.style.display = 'none';
+        break;
+    }
+  }
+}
+
+hideStar();
+hideStar();
 
 /*
  * Display the cards on the page
@@ -13,6 +45,26 @@
  */
 
 // Shuffle function from http://stackoverflow.com/a/2450976
+
+function shuffleDeck () {
+  const cardsToShuffle = Array.from(document.querySelectorAll('.deck li'));
+  console.log('Cards to shuffle', cardsToShuffle);
+  const shuffledCards = shuffle(cardsToShuffle);
+  console.log('Shuffled cards', shuffledCards);
+}
+shuffleDeck();
+
+
+function shuffleDeck () {
+  const cardsToShuffle = Array.from(document.querySelectorAll('.deck li'));
+  const shuffledCards = shuffle(cardsToShuffle);
+  for (card of shuffledCards) {
+    deck.appendChild(card);
+  }
+}
+shuffleDeck();
+
+
 function shuffle(array) {
   var currentIndex = array.length,
     temporaryValue, randomIndex;
@@ -27,17 +79,15 @@ function shuffle(array) {
   return array;
 }
 
+
 //step 1. all the cards have a "card" class
 //step 2. use querySelector to store all valules in a variable
 //step 3. the variable is called "deck" to represent the deck of cards
 // what is a querySelectorAll?
 
-const deck = document.querySelector('.deck');
 
 deck.addEventListener('click',event => {
   const clickTarget = event.target;
-<<<<<<< HEAD
-
 
 
   console.log(toggledCards);
@@ -45,8 +95,8 @@ deck.addEventListener('click',event => {
          addToggleCard(clickTarget);
          if (toggledCards.length === 2) {
              checkForMatch(clickTarget);
-             addMove();
-             checkScore();
+             addMove(); //moves to increment after cards are toggled
+             checkScore(); //check stars, call function everytime i complete move. 
          }
      }
  });
@@ -73,7 +123,7 @@ function.toggleCard(card) {
     toggleCard(clickTarget);
     addToggleCard(clickTarget);
     if(toggledCards.length === 2) {
-  
+
     }
   }
 });
@@ -81,14 +131,12 @@ function.toggleCard(card) {
 function.toggleCard(clickTarget) {
     clickTarget.classList.toggle('open');
     clickTarget.classList.toggle('show');
->>>>>>> 55e775b5412b1af770891c1f5423b7e3b1d1a7bf
   }
 
 function addToggleCard(clickTarget {
   toggleCards.push(clickTarget);
   console.log(toggleCard)
 }
-<<<<<<< HEAD
 
 
 function checkForMatch ()
@@ -114,8 +162,6 @@ if (
 
 
 
-=======
->>>>>>> 55e775b5412b1af770891c1f5423b7e3b1d1a7bf
 
 // use a loop to attached an event listener to each card
 // it's easier to do that than individually
