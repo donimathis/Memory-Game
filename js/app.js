@@ -1,516 +1,222 @@
-//Global scopes
-const deck = document.querySelector('.deck');
-let moves = 0; //the moves counter
-let time = 0; //set the clock variable
-let matched = 0;
-let clockOff = true;//whether the clock is on or off.
-let toggledCards = [];
-let clockId;
-<<<<<<< HEAD
-=======
 
-time = 121;
-displayTime();
-moves = 16
-checkScore();
+let card = document.getElementsByClassName("card");
+let cards = [...card]
+let openedCards = [];
+let interval;
+let moves = 0;
+let counter = document.querySelector(".moves");
+let matchedCard = document.getElementsByClassName("match");
+let starsList = document.querySelectorAll(".stars li");
+let closeicon = document.querySelector(".close");
+let modal = document.getElementById("popup1")
+const stars = document.querySelectorAll(".fa-star");
+const deck = document.getElementById("card-deck");
 
-writeModalStats();
-toggleModal();
+// shuffledarray
+function shuffle(array) {
+    let currentIndex = array.length, temporaryValue, randomIndex;
 
-function writeModalStats() {
-    const timeStat = document.querySelector('.modal__time');
-    const clockTime = document.querySelector('.clock').innerHTML;
-    const movesStat = document.querySelector('.modal__moves');
-    const starsStat = document.querySelector('.modal__stars');
-    const stars = getStars();
+    while (currentIndex !== 0) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+    }
 
-    timeStat.innerHTML = `Time = ${clockTime}`;
-    movesStat.innerHTML = `Moves = ${moves}`;
-    starsStat.innerHTML = `Stars = ${stars}`;
+    return array;
+};
+
+
+//reLoad Window
+window.onload = startGame();
+
+
+//startGame
+function startGame(){
+    cards = shuffle(cards);
+    let cardDeck = cards.length;
+    for (let i = 0; i < cardDeck; i++){
+        deck.innerHTML = "";
+        [].forEach.call(cards, function(item) {
+            deck.appendChild(item);
+        });
+        cards[i].classList.remove("show", "open", "match", "disabled");
+    }
+    // reset moves
+    moves = 0;
+    counter.innerHTML = moves;
+    let starsMove = stars.length;
+    for (let i= 0; i < starsMove; i++){
+        stars[i].style.color = "#FFD700";
+        stars[i].style.visibility = "visible";
+    }
+    //reset timer
+    second = 0;
+    minute = 0;
+    hour = 0;
+    let timer = document.querySelector(".timer");
+    timer.innerHTML = `mins 0 secs 0`;
+    clearInterval(interval);
 }
 
-function getStars() {
-    stars = document.querySelectorAll('.stars li');
-    starCount = 0;
-    for (star of stars) {
-        if (star.style.display !== 'none') {
-            starCount++;
+
+// @description toggles open and show class to display cards
+let displayCard = function (){
+    this.classList.toggle("open");
+    this.classList.toggle("show");
+    this.classList.toggle("disabled");
+};
+
+
+// openedCards
+function cardOpen() {
+    openedCards.push(this);
+    var duo = openedCards.length;
+    if(duo === 2){
+        moveCounter();
+        if(openedCards[0].type === openedCards[1].type){
+            cardMatched();
+        } else {
+            cardUnmatched();
         }
     }
-    return starCount;
-}
+};
 
-document.querySelector('.modal__cancel').addEventListener('click', () => {
-    toggleModal();
-});
 
-document.querySelector('.modal__replay').addEventListener('click', replayGame);
-
-document.querySelector('.restart').addEventListener('click', resetGame);
-
-document.querySelector('.modal__replay').addEventListener('click', resetGame);
-
-const TOTAL_PAIRS = 8;
-if (matched === TOTAL_PAIRS) {
-  gameOver();
+ //cardsMatch
+function cardMatched(){
+    openedCards[0].classList.add("match", "disabled");
+    openedCards[1].classList.add("match", "disabled");
+    openedCards[0].classList.remove("show", "open");
+    openedCards[1].classList.remove("show", "open");
+    openedCards = [];
 }
 
 
-function gameOver() {
-  stopClock();
-  writeModalStats();
-  toggleModal();
+// Unmatched Cards
+function cardUnmatched(){
+    openedCards[0].classList.add("unmatched");
+    openedCards[1].classList.add("unmatched");
+    disable();
+    setTimeout(function(){
+        openedCards[0].classList.remove("show", "open", "unmatched");
+        openedCards[1].classList.remove("show", "open", "unmatched");
+        enable();
+        openedCards = [];
+    },600);
 }
 
 
-function replayGame() {
-  resetGame();
-  toggleModal();
-}
-
-function resetMoves() {
-  moves = 0;
-  document.querySelector('.moves').innerHTML = moves;
-}
-
-function resetStars() {
-  stars = 0;
-  const starList = document.querySelectorAll('.stars li');
-  for (star of starList) {
-    star.style.display = 'inline';
-  }
+// DisableCards
+function disable(){
+    Array.prototype.filter.call(cards, function(card){
+        card.classList.add('disabled');
+    });
 }
 
 
-function resetGame()  {
-  resetClockandTime();
-  resetMoves();
-  shuffleDeck();
+// Enable Cards
+function enable(){
+    Array.prototype.filter.call(cards, function(card){
+        card.classList.remove('disabled');
+        for(let i = 0; i < matchedCard.length; i++){
+            matchedCard[i].classList.add("disabled");
+        }
+    });
 }
 
-function resetClockandTime() {
-  stopClock();
-  clockOff = true;
-  time = 0;
-  displayTime();
-}
 
-function resetCards() {
-  const cards = document. querySelectorAll('.deck li');
-  for(let card of cards) {
-    card.className = 'card';
-  }
-}
-
-// * Create a list that holds all of your cards
-//  array is a list
- //*/
-// in order for the javascript and html to interact, you must use the dom
-// Create a list(array) that holds all of your cards
-
-//moves function
-function addMove() {
-  moves++
-  const movesText = document.querySelector('.moves');
-  movesText.innerHTML = moves;
-}
-
-//stars
-function checkScore() {
-  if(moves === 16 || moves === 24
-  ){ removeStar();
-
-  }
-}
-
-function hideStar() {
-  const starlist = document.querySelectorAll('.stars li');
-  for (star of starlist) {
-    if (star.style.display !== 'none') {
-        star.style.display = 'none';
-        break;
+// Move Counter
+function moveCounter(){
+    moves++;
+    counter.innerHTML = moves;
+    //start timer on first click
+    if(moves == 1){
+        second = 0;
+        minute = 0;
+        hour = 0;
+        startTimer();
     }
-  }
-}
 
-hideStar();
-hideStar();
-
-/*
- * Display the cards on the page
- *   - shuffle the list of cards using the provided "shuffle" method below
- *   - loop through each card and create its HTML
- *   - add each card's HTML to the page //apphend chil
- */
-
-// Shuffle function from http://stackoverflow.com/a/2450976
-
-function shuffleDeck () {
-  const cardsToShuffle = Array.from(document.querySelectorAll('.deck li'));
-  console.log('Cards to shuffle', cardsToShuffle);
-  const shuffledCards = shuffle(cardsToShuffle);
-  console.log('Shuffled cards', shuffledCards);
-}
-shuffleDeck();
-
->>>>>>> b70c8b60185d1abbf02753627239e447a76c6d64
-
-function shuffleDeck () {
-  const cardsToShuffle = Array.from(document.querySelectorAll('.deck li'));
-  const shuffledCards = shuffle(cardsToShuffle);
-  for (card of shuffledCards) {
-    deck.appendChild(card);
-  }
-}
-shuffleDeck();
-
-
-function shuffle(array) {
-  var currentIndex = array.length,
-    temporaryValue, randomIndex;
-
-  while (currentIndex !== 0) {
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex -= 1;
-    temporaryValue = array[currentIndex];
-    array[currentIndex] = array[randomIndex];
-    array[randomIndex] = temporaryValue;
-  }
-
-  return array;
-}
-
-/*
- * set up the event listener for a card. If a card is clicked:
- *  - display the card's symbol (put this functionality in another function that you call from this one)
- *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
- *  - if the list already has another card, check to see if the two cards match
- *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
- *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
- *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
- *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
- */
-
-
-deck.addEventListener('click',event => {
-  const clickTarget = event.target;
-if (isClickValid(clickTarget)){
-  if(clockOff) {
-    startClock();
-    clockOff = false;
-  }
-<<<<<<< HEAD
-=======
-}
-
-  console.log(toggledCards);
->>>>>>> b70c8b60185d1abbf02753627239e447a76c6d64
-         toggleCard(clickTarget);
-         addToggleCard(clickTarget);
-         if (toggledCards.length === 2) {
-             checkForMatch(clickTarget);
-             addMove(); //moves to increment after cards are toggled
-             checkScore(); //check stars, call function everytime i complete move.
-<<<<<<< HEAD
-         }
-     }
- });
-
-   function isClickValid(clickTarget) {
-     return (
-         clickTarget.classList.contains('card') &&
-         !clickTarget.classList.contains('match') &&
-         toggledCards.length < 2 &&
-         !toggledCards.includes(clickTarget)
-     );
- }
-
- function startClock() {
-   clockId= setInterval(() => {
-     time++;
-     displayTime();
-     console.log(time);
-   }, 1000);
- }
- startClock();
-
- function displayTime() {
-   const clock = document.querySelector('.clock');
-   const minutes = Math.floor(time / 60);
-   const seconds = time % 60;
-
-   if (seconds < 10 ) {
-     clock.innerHTML = `${minutes}:0${seconds}`;
-   } else {
-     clock.innerHTML = `${minutes}:${seconds}`;
-   };
- }
-
- function.toggleCard(clickTarget) {
-     clickTarget.classList.toggle('open');
-     clickTarget.classList.toggle('show');
-   }
-
- function addToggleCard(clickTarget {
-   toggleCards.push(clickTarget);
-   console.log(toggleCard)
- }
-
-
- function checkForMatch () {
- if (
-   toggleCards[0].firstElementChild.className ===
-   toggleCards[1].firstElementChild.className
- ) {
-   toggledCards[0].classList.toggle('match');
-   toggledCards[1].classList.toggle('match');
-   toggledCards = [];
-   matched++;
-   if(matched === TOTAL_PAIRS)
-    gameOver();
-
- } else {
-   setTimeout (() => {
-     toggleCard(toggledCards[0]);
-     toggleCard(toggledCards[1]);
-     toggeledCards = [];
-   }, 1000);
-
- }
-
- function gameOver() {
-   stopClock();
-   writeModalStats();
-   toggleModal();
- }
-
- function stopClock() {
-   clearInterval(clockId);
- }
-
- function toggleModal() {
-   const modal = document.querySelector('.modal__backgroud');
-   modal.classList.toggle('hide');
- }
-
- function writeModalStats() {
-     const timeStat = document.querySelector('.modal__time');
-     const clockTime = document.querySelector('.clock').innerHTML;
-     const movesStat = document.querySelector('.modal__moves');
-     const starsStat = document.querySelector('.modal__stars');
-     const stars = getStars();
-
-     timeStat.innerHTML = `Time = ${clockTime}`;
-     movesStat.innerHTML = `Moves = ${moves}`;
-     starsStat.innerHTML = `Stars = ${stars}`;
- }
-
-
- function getStars() {
-     stars = document.querySelectorAll('.stars li');
-     starCount = 0;
-     for (star of stars) {
-         if (star.style.display !== 'none') {
-             starCount++;
-=======
->>>>>>> b70c8b60185d1abbf02753627239e447a76c6d64
-         }
-     }
-     return starCount;
- }
-
- //moves function
- function addMove() {
-   moves++
-   const movesText = document.querySelector('.moves');
-   movesText.innerHTML = moves;
- }
-
- //stars
- function checkScore() {
-   if(moves === 16 || moves === 24) {
-     hideStar();
-
-   }
- }
-
- function hideStar() {
-   const starlist = document.querySelectorAll('.stars li');
-   for (star of starlist) {
-     if (star.style.display !== 'none') {
-         star.style.display = 'none';
-         break;
-     }
-   }
- }
-
-
-
- document.querySelector('.modal__cancel').addEventListener('click', () => {
-     toggleModal();
- });
-
- document.querySelector('.modal__replay').addEventListener('click', replayGame);
-
- function replayGame() {
-   resetGame();
-   toggleModal();
- }
-
- document.querySelector('.restart').addEventListener('click', resetGame);
-
-
-function resetGame()  {
-  resetClockandTime();
-  resetMoves();
-  resetStars();
-  shuffleDeck();
-}
-
-function resetClockandTime() {
-  stopClock();
-  clockOff = true;
-  time = 0;
-  displayTime();
-}
-
-
-function resetMoves() {
-  moves = 0;
-  document.querySelector('.moves').innerHTML = moves;
-}
-
-function resetStars() {
-  stars = 0;
-  const starList = document.querySelectorAll('.stars li');
-  for (star of starList) {
-    star.style.display = 'inline';
-  }
-}
-
-function resetCards() {
-  const cards = document. querySelectorAll('.deck li');
-  for(let card of cards) {
-    card.className = 'card';
-  }
-}
-
-// * Create a list that holds all of your cards
-//  array is a list
- //*/
-// in order for the javascript and html to interact, you must use the dom
-// Create a list(array) that holds all of your cards
-
-
-/*
- * Display the cards on the page
- *   - shuffle the list of cards using the provided "shuffle" method below
- *   - loop through each card and create its HTML
- *   - add each card's HTML to the page //apphend chil
- */
-
-// Shuffle function from http://stackoverflow.com/a/2450976
-
-
-
-function.toggleCard(card) {
-    card.classList.toggle('open');
-    card.classList.toggle('show');
-  }
-
-  if (clickTarget.classList.contains('card') && toggledCards.length < 2) {
-    toggleCard(clickTarget);
-    addToggleCard(clickTarget);
-    if(toggledCards.length === 2) {
-
+    if (moves > 8 && moves < 12){
+        for( i= 0; i < 3; i++){
+            if(i > 1){
+                stars[i].style.visibility = "collapse";
+            }
+        }
     }
-  }
+    else if (moves > 13){
+        for( i= 0; i < 3; i++){
+            if(i > 0){
+                stars[i].style.visibility = "collapse";
+            }
+        }
+    }
+}
+
+
+//GameTimer
+var second = 0, minute = 0; hour = 0;
+let timer = document.querySelector(".timer");
+function startTimer(){
+    interval = setInterval(() => {
+        timer.innerHTML = minute+"mins "+second+"secs";
+        second++;
+        if(second % 60 === 0){
+            minute++;
+            second=0;
+        }
+        if(minute % 60 === 0){
+            hour++;
+            minute = 0;
+        }
+    },600);
+}
+
+
+// @description congratulations when all cards match, show modal and moves, time and rating
+function congratulations(){
+    if (matchedCard.length == 16){
+        clearInterval(interval);
+        finalTime = timer.innerHTML;
+
+        // show congratulations modal
+        modal.classList.add("show");
+
+        // declare star rating variable
+        var starRating = document.querySelector(".stars").innerHTML;
+
+        //showing move, rating, time on modal
+        document.getElementById("finalMove").innerHTML = moves;
+        document.getElementById("starRating").innerHTML = starRating;
+        document.getElementById("totalTime").innerHTML = finalTime;
+
+        //closeicon on modal
+        closeModal();
+    };
+}
+
+
+
+function closeModal(){
+    closeicon.addEventListener("click", function(e){
+        modal.classList.remove("show");
+        startGame();
+    });
+}
+
+
+
+document.getElementById('play-again').addEventListener('click', function() {
+  modal.style.display = "none";
+    startGame();
 });
 
 
-
-
-<<<<<<< HEAD
-
-
-=======
-function checkForMatch () {
-if (
-  toggleCards[0].firstElementChild.className ===
-  toggleCards[1].firstElementChild.className
-) {
-  toggledCards[0].classList.toggle('match');
-  toggledCards[1].classList.toggle('match');
-  toggledCards = [];
-  matched++;
-} else {
-  setTimeout (() => {
-    toggleCard(toggledCards[0]);
-    toggleCard(toggledCards[1]);
-    toggeledCards = [];
-  }, 1000);
->>>>>>> b70c8b60185d1abbf02753627239e447a76c6d64
-
-
-
-
-
-
-function startClock() {
-  time = 0;
-  clockId= setInterval(() => {
-    time++;
-    displayTime();
-    console.log(time);
-  }, 1000);
-}
-startClock();
-
-function displayTime() {
-  const clock = document.querySelector('.clock');
-  const minutes = Math.floor(time / 60);
-  const seconds = time % 60;
-
-  if (seconds < 10 ) {
-    clock.innerHTML = `${minutes}:0${seconds}`;
-  } else {
-    clock.innerHTML = `${minutes}:${seconds}`;
-  };
-}
-
-function stopClock() {
-  clearInterval(clockId);
-}
-
-stopClock();
-
-function toggleModal() {
-  const modal = document.querySelector('.modal__backgroud');
-  modal.classList.toggle('hide');
-}
-toggleModal(); //open modal
-toggleModal();//off
-
-// use a loop to attached an event listener to each card
-// it's easier to do that than individually
-
-
-//add the card to a list of open cards
-//step1: create a variable which holds and empty earry
-//step2: push click targets into it.
-
-
-
-
-
-/*
- * set up the event listener for a card. If a card is clicked:
-
- *  - display the card's symbol (put this functionality in another function that you call from this one)
- *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
- *  - if the list already has another card, check to see if the two cards match
- *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
- *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
- *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
- *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
- */
+for (let i = 0; i < cards.length; i++){
+    card = cards[i];
+    card.addEventListener("click", displayCard);
+    card.addEventListener("click", cardOpen);
+    card.addEventListener("click",congratulations);
+};
