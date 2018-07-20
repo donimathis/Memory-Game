@@ -3,8 +3,8 @@
 Project currently in Progress
 
 
-# Memory Game Project: 
-The project is apart of the Grow with Google Scholars Front- End Nanodegree with Udacity. 
+# Memory Game Project:
+The project is apart of the Grow with Google Scholars Front- End Nanodegree with Udacity.
 The game board consists of sixteen "cards" arranged in a grid. The deck is made up of eight different pairs of cards, each with different symbols on one side. The cards are arranged randomly on the grid with the symbol face down. The gameplay rules are very simple: flip over two hidden cards at a time to locate the ones that match!
 
 
@@ -20,4 +20,3 @@ The game ends once all cards have been correctly matched.
 
 # How I Built the Memory Game:
 I used HTML5, CSS and Vanilla JS
-
