@@ -1,4 +1,4 @@
-"use strict";
+
 
 let card = document.getElementsByClassName("card");
 let cards = [...card]
