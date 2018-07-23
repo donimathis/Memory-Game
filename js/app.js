@@ -34,7 +34,7 @@ window.onload = startGame();
 
 
 //startGame
-function startGame() => {
+function startGame() {
     cards = shuffle(cards);
     let cardDeck = cards.length;
     for (let i = 0; i < cardDeck; i++){
@@ -63,7 +63,7 @@ function startGame() => {
 
 
 // @description toggles open and show class to display cards
-let displayCard = function () => {
+let displayCard = function () {
     this.classList.toggle("open");
     this.classList.toggle("show");
     this.classList.toggle("disabled");
